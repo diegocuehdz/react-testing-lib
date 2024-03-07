@@ -13,11 +13,11 @@ const ProductList = () => {
         setLoading(true);
         const { data } = await axios.get("/products");
         setProducts(data);
-        setLoading(false);
       } catch (error) {
-        setLoading(false);
         if (error instanceof AxiosError) setError(error.message);
         else setError("An unexpected error occurred");
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
