@@ -5,10 +5,10 @@ import {
 } from "@testing-library/react";
 import ProductList from "../../src/components/ProductList";
 
-import { HttpResponse, http, delay } from "msw";
-import { server } from "../mocks/server";
+import { HttpResponse, delay, http } from "msw";
+import AllProviders from "../AllProviders";
 import { db } from "../mocks/db";
-import delay from "delay";
+import { server } from "../mocks/server";
 
 describe("ProductList", () => {
   const productIds: number[] = [];
@@ -25,7 +25,7 @@ describe("ProductList", () => {
   });
 
   it("should render the list of products", async () => {
-    render(<ProductList />);
+    render(<ProductList />, { wrapper: AllProviders });
     const items = await screen.findAllByRole("listitem");
     expect(items.length).toBeGreaterThan(0);
   });
@@ -37,7 +37,7 @@ describe("ProductList", () => {
       })
     );
 
-    render(<ProductList />);
+    render(<ProductList />, { wrapper: AllProviders });
     const message = await screen.findByText(/no products/i);
     expect(message).toBeInTheDocument();
   });
@@ -49,7 +49,7 @@ describe("ProductList", () => {
       })
     );
 
-    render(<ProductList />);
+    render(<ProductList />, { wrapper: AllProviders });
     expect(await screen.findByText(/error/i)).toBeInTheDocument();
   });
 
@@ -61,12 +61,12 @@ describe("ProductList", () => {
       })
     );
 
-    render(<ProductList />);
+    render(<ProductList />, { wrapper: AllProviders });
     expect(await screen.findByText(/loading/i)).toBeInTheDocument();
   });
 
   it("should remove the loading indicator after data is fetched", async () => {
-    render(<ProductList />);
+    render(<ProductList />, { wrapper: AllProviders });
     await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
   });
 
@@ -77,7 +77,7 @@ describe("ProductList", () => {
       })
     );
 
-    render(<ProductList />);
+    render(<ProductList />, { wrapper: AllProviders });
     await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
   });
 });
